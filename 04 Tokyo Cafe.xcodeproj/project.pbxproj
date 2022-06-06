@@ -9,21 +9,19 @@
 /* Begin PBXBuildFile section */
 		577B26B9284DF2C2006852EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B26B8284DF2C2006852EE /* AppDelegate.swift */; };
 		577B26BB284DF2C2006852EE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B26BA284DF2C2006852EE /* SceneDelegate.swift */; };
-		577B26BD284DF2C2006852EE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B26BC284DF2C2006852EE /* ViewController.swift */; };
-		577B26C0284DF2C2006852EE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 577B26BE284DF2C2006852EE /* Main.storyboard */; };
 		577B26C2284DF2C3006852EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 577B26C1284DF2C3006852EE /* Assets.xcassets */; };
 		577B26C5284DF2C3006852EE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 577B26C3284DF2C3006852EE /* LaunchScreen.storyboard */; };
+		577B26CE284DF95D006852EE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B26CD284DF95D006852EE /* LoginViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		577B26B5284DF2C2006852EE /* 04 Tokyo Cafe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "04 Tokyo Cafe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		577B26B8284DF2C2006852EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		577B26BA284DF2C2006852EE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		577B26BC284DF2C2006852EE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		577B26BF284DF2C2006852EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		577B26C1284DF2C3006852EE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		577B26C4284DF2C3006852EE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		577B26C6284DF2C3006852EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		577B26CD284DF95D006852EE /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,8 +56,7 @@
 			children = (
 				577B26B8284DF2C2006852EE /* AppDelegate.swift */,
 				577B26BA284DF2C2006852EE /* SceneDelegate.swift */,
-				577B26BC284DF2C2006852EE /* ViewController.swift */,
-				577B26BE284DF2C2006852EE /* Main.storyboard */,
+				577B26CD284DF95D006852EE /* LoginViewController.swift */,
 				577B26C1284DF2C3006852EE /* Assets.xcassets */,
 				577B26C3284DF2C3006852EE /* LaunchScreen.storyboard */,
 				577B26C6284DF2C3006852EE /* Info.plist */,
@@ -128,7 +125,6 @@
 			files = (
 				577B26C5284DF2C3006852EE /* LaunchScreen.storyboard in Resources */,
 				577B26C2284DF2C3006852EE /* Assets.xcassets in Resources */,
-				577B26C0284DF2C2006852EE /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,7 +155,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				577B26BD284DF2C2006852EE /* ViewController.swift in Sources */,
+				577B26CE284DF95D006852EE /* LoginViewController.swift in Sources */,
 				577B26B9284DF2C2006852EE /* AppDelegate.swift in Sources */,
 				577B26BB284DF2C2006852EE /* SceneDelegate.swift in Sources */,
 			);
@@ -168,14 +164,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		577B26BE284DF2C2006852EE /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				577B26BF284DF2C2006852EE /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		577B26C3284DF2C3006852EE /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -311,9 +299,9 @@
 				DEVELOPMENT_TEAM = P3BYVBK57Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "04 Tokyo Cafe/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Tokyo Cafe";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -339,9 +327,9 @@
 				DEVELOPMENT_TEAM = P3BYVBK57Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "04 Tokyo Cafe/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Tokyo Cafe";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
