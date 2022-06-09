@@ -18,24 +18,43 @@ class LoginViewController: UIViewController {
     }()
     
     lazy var logoLabel: UILabel = {
+        let font = UIFont(name: "Arial Rounded MT Bold", size: 75)!
+        
+        let shadow = NSShadow()
+        shadow.shadowBlurRadius = 7
+        shadow.shadowOffset = CGSize(width: 5, height: 5)
+        shadow.shadowColor = #colorLiteral(red: 0.7247480154, green: 0.0524269864, blue: 0.583555162, alpha: 1)
+
+        let attr: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.font: font,
+            NSAttributedString.Key.shadow: shadow,
+            NSAttributedString.Key.foregroundColor: #colorLiteral(red: 1, green: 0.2109183669, blue: 0.9036154747, alpha: 1)
+        ]
+        let attrString = NSAttributedString(string: "TOKYO", attributes: attr)
         let label = UILabel()
-        label.textAlignment = .center
-        label.textColor = #colorLiteral(red: 1, green: 0.2109183669, blue: 0.9036154747, alpha: 1)
-        label.font = UIFont(name: "Hiragino Maru Gothic ProN", size: 70)
-        label.shadowColor = #colorLiteral(red: 0.5653312206, green: 0.05673880875, blue: 0.452085197, alpha: 1)
-        label.shadowOffset = CGSize(width: 3, height: 4)
-        label.text = "TOKYO"
+        label.attributedText = attrString
+        
         return label
     }()
     
     lazy var sublogoLabel: UILabel = {
+        let font = UIFont(name: "Arial Rounded MT Bold", size: 50)!
+        
+        let shadow = NSShadow()
+        shadow.shadowBlurRadius = 6
+        shadow.shadowOffset = CGSize(width: 3, height: 3)
+        shadow.shadowColor = #colorLiteral(red: 0.1411764771, green: 0.3960784376, blue: 0.5647059083, alpha: 1)
+        
+        let attr: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.font: font,
+            NSAttributedString.Key.shadow: shadow,
+            NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+        ]
+        let attrString = NSAttributedString(string: "cafe", attributes: attr)
         let label = UILabel()
+        label.attributedText = attrString
         label.textAlignment = .center
-        label.textColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
-        label.font = UIFont(name: "Hiragino Maru Gothic ProN", size: 50)
-        label.shadowColor = #colorLiteral(red: 0.1411764771, green: 0.3960784376, blue: 0.5647059083, alpha: 1)
-        label.shadowOffset = CGSize(width: 2, height: 2)
-        label.text = "cafe"
+        
         return label
     }()
     
@@ -69,10 +88,9 @@ class LoginViewController: UIViewController {
         return button
     }()
     
-    let storage = UserDefaults.standard
+    var loginComplition: ((String) -> Void)?
     
     var codeGenerator: GeneratorProtocol!
-    var phone: Int!
     var code: String!
     
     // MARK: - Life Cycle
@@ -95,30 +113,30 @@ class LoginViewController: UIViewController {
     
     @objc func loginButtonTapped(sender: UIButton) {
         textField.resignFirstResponder()
-        guard let text = Int(textField.text ?? "") else {
-            textField.text = nil
+        guard let text = textField.text else { return }
+        textField.text = nil
+        if Int(text) != nil {
+            guard let phone = phoneLabel.text else {
+                loginButton.isEnabled = false
+                sendMessage(withCode: code, complition: {
+                    self.loginButton.isEnabled = true
+                })
+                phoneLabel.text = "📞  \(text)"
+                textField.placeholder = "Enter the code"
+                return
+            }
+            if text == code {
+                loginComplition?(phone)
+                dismiss(animated: true)
+            } else {
+                textField.placeholder = "Wrong code"
+            }
+        } else {
             if phoneLabel.text == nil {
                 textField.placeholder = "Enter the phone number"
             } else {
                 textField.placeholder = "Enter the code"
             }
-            return
-        }
-        if phoneLabel.text == nil {
-            loginButton.isEnabled = false
-            sendMessage(withCode: code, complition: {
-                self.loginButton.isEnabled = true
-            })
-            phone = text
-            phoneLabel.text = "📞  \(text)"
-            textField.text = nil
-            textField.placeholder = "Enter the code"
-        } else if String(text) == code {
-            storage.set(phone, forKey: "account")
-            dismiss(animated: true)
-        } else {
-            textField.text = nil
-            textField.placeholder = "Wrong code"
         }
     }
     
@@ -154,7 +172,7 @@ class LoginViewController: UIViewController {
         logoLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
         
         sublogoLabel.translatesAutoresizingMaskIntoConstraints = false
-        sublogoLabel.topAnchor.constraint(equalTo: logoLabel.bottomAnchor, constant: 20).isActive = true
+        sublogoLabel.topAnchor.constraint(equalTo: logoLabel.bottomAnchor, constant: 10).isActive = true
         sublogoLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
         sublogoLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
         

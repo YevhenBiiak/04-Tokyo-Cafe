@@ -39,6 +39,9 @@ class OrderViewController: UIViewController {
         conf.imagePadding = 8
         conf.imagePlacement = .top
         let button = UIButton(configuration: conf)
+//      #colorLiteral(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
+        button.backgroundColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 0.5)
+        button.layer.cornerRadius = 10
         button.addTarget(nil, action: #selector(showMenuViewController), for: .touchUpInside)
         return button
     }()
@@ -56,54 +59,54 @@ class OrderViewController: UIViewController {
     }()
     
     let storage = UserDefaults.standard
-    var customer: String?
-    let cellHeight: CGFloat = 85
-    var orderList: [Product] = [] {
+    let customerKey = "account"
+    
+    var customer: String? {
         didSet {
-            print("chaange")
-            orderTableView.reloadData()
+            storage.set(customer, forKey: customerKey)
+            self.title = customer
         }
     }
+    
+    var orderList: [Product] = [] {
+        didSet { orderTableView.reloadData() }
+    }
+    
+    let cellHeight: CGFloat = 85
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         orderTableView.register(ProductCell.self, forCellReuseIdentifier: "ProductCell")
         orderTableView.dataSource = self
         orderTableView.delegate = self
-
-        customer = getCustomerPhone()
+        
         setupViews()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+//      storage.set(nil, forKey: customerKey)
+        customer = storage.string(forKey: customerKey)
+        if customer == nil {
+            showLoginViewController()
+        }
     }
     
     // MARK: - Help methods
     
-    private func getCustomerPhone() -> String? {
-//        storage.set(nil, forKey: "account")
-        if storage.string(forKey: "account") == nil {
-            showLoginViewController()
-        }
-        return storage.string(forKey: "account")
-    }
-    
-    private func setupViews() {
-        view.backgroundColor = .systemBackground
-        self.title = customer
-        navigationItem.backButtonTitle = "back to my order"
-        
-        addSubviews()
-        addConstraints()
-    }
-    
     private func showLoginViewController() {
         let loginViewController = LoginViewController()
+        loginViewController.loginComplition = { customer in
+            self.customer = customer
+        }
         loginViewController.modalPresentationStyle = .fullScreen
         present(loginViewController, animated: true)
     }
     
     @objc private func showMenuViewController() {
-        let menuViewController = MenuTableViewController()
+        let menuViewController = MenuTableViewController(style: .grouped)
         menuViewController.addToCartComplition = { (product: Product) in
             self.orderList.append(product)
         }
@@ -113,7 +116,16 @@ class OrderViewController: UIViewController {
     
     @objc private func showCheckViewController() {
         let checkViewController = CheckViewController()
+        checkViewController.orderList = orderList
         show(checkViewController, sender: nil)
+    }
+    
+    private func setupViews() {
+        view.backgroundColor = .systemBackground
+        navigationItem.backButtonTitle = "back"
+        
+        addSubviews()
+        addConstraints()
     }
     
     private func addSubviews() {
@@ -142,26 +154,25 @@ class OrderViewController: UIViewController {
         orderTableView.topAnchor.constraint(equalTo: myOrderLabel.bottomAnchor, constant: 12).isActive = true
         orderTableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         orderTableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        orderTableView.bottomAnchor.constraint(equalTo: checkButton.topAnchor, constant: -50).isActive = true
+        orderTableView.bottomAnchor.constraint(equalTo: checkButton.topAnchor, constant: -15).isActive = true
         
         menuButton.translatesAutoresizingMaskIntoConstraints = false
-        menuButton.centerYAnchor.constraint(equalTo: orderTableView.bottomAnchor, constant: -4).isActive = true
+        menuButton.bottomAnchor.constraint(equalTo: checkButton.topAnchor, constant: -20).isActive = true
         menuButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
                 
         checkButton.translatesAutoresizingMaskIntoConstraints = false
         checkButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        checkButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
         checkButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -32).isActive = true
-        checkButton.widthAnchor.constraint(equalToConstant: 180).isActive = true
         checkButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
     }
 
 }
 
-// MARK: - TableView
+// MARK: - Table View DataSource
 
 extension OrderViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(orderList.count)
         return orderList.count
     }
     
@@ -176,8 +187,19 @@ extension OrderViewController: UITableViewDataSource {
         return cell
     }
 }
+
+// MARK: - Table View Delegate
+
 extension OrderViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return cellHeight
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = UIContextualAction(style: .destructive, title: "delete") { _, _, _ in
+            self.orderList.remove(at: indexPath.row)
+            tableView.reloadData()
+        }
+        return UISwipeActionsConfiguration(actions: [delete])
     }
 }
