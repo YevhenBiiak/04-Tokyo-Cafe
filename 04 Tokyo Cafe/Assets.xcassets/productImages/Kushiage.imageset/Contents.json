@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "nft.jpg",
+      "filename" : "Kushiage.jpg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "nft-1.jpg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "nft-2.jpg",
       "idiom" : "universal",
       "scale" : "3x"
     }
