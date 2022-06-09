@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5704840D2851FC22007C6BA3 /* CheckCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5704840C2851FC22007C6BA3 /* CheckCell.swift */; };
 		57252979284F6B3A00AC088A /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57252978284F6B3A00AC088A /* OrderViewController.swift */; };
 		5725297B284F752C00AC088A /* CodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5725297A284F752C00AC088A /* CodeGenerator.swift */; };
 		5725297F284F8FD400AC088A /* CheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5725297E284F8FD400AC088A /* CheckViewController.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5704840C2851FC22007C6BA3 /* CheckCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckCell.swift; sourceTree = "<group>"; };
 		57252978284F6B3A00AC088A /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
 		5725297A284F752C00AC088A /* CodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeGenerator.swift; sourceTree = "<group>"; };
 		5725297E284F8FD400AC088A /* CheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckViewController.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				572529872850B05200AC088A /* ProductCell.swift */,
+				5704840C2851FC22007C6BA3 /* CheckCell.swift */,
 			);
 			name = TableViewCell;
 			sourceTree = "<group>";
@@ -207,6 +210,7 @@
 				577B26B9284DF2C2006852EE /* AppDelegate.swift in Sources */,
 				572529852850AF1600AC088A /* MenuTableViewController.swift in Sources */,
 				572529832850A95000AC088A /* Storage.swift in Sources */,
+				5704840D2851FC22007C6BA3 /* CheckCell.swift in Sources */,
 				572529882850B05200AC088A /* ProductCell.swift in Sources */,
 				577B26BB284DF2C2006852EE /* SceneDelegate.swift in Sources */,
 				572529812850A84F00AC088A /* Product.swift in Sources */,
