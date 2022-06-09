@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		57252979284F6B3A00AC088A /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57252978284F6B3A00AC088A /* OrderViewController.swift */; };
+		5725297B284F752C00AC088A /* CodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5725297A284F752C00AC088A /* CodeGenerator.swift */; };
+		5725297F284F8FD400AC088A /* CheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5725297E284F8FD400AC088A /* CheckViewController.swift */; };
+		572529812850A84F00AC088A /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572529802850A84F00AC088A /* Product.swift */; };
+		572529832850A95000AC088A /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572529822850A95000AC088A /* Storage.swift */; };
+		572529852850AF1600AC088A /* MenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572529842850AF1600AC088A /* MenuTableViewController.swift */; };
+		572529882850B05200AC088A /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572529872850B05200AC088A /* ProductCell.swift */; };
 		577B26B9284DF2C2006852EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B26B8284DF2C2006852EE /* AppDelegate.swift */; };
 		577B26BB284DF2C2006852EE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B26BA284DF2C2006852EE /* SceneDelegate.swift */; };
 		577B26C2284DF2C3006852EE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 577B26C1284DF2C3006852EE /* Assets.xcassets */; };
@@ -15,6 +22,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		57252978284F6B3A00AC088A /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
+		5725297A284F752C00AC088A /* CodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeGenerator.swift; sourceTree = "<group>"; };
+		5725297E284F8FD400AC088A /* CheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckViewController.swift; sourceTree = "<group>"; };
+		572529802850A84F00AC088A /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		572529822850A95000AC088A /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		572529842850AF1600AC088A /* MenuTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuTableViewController.swift; sourceTree = "<group>"; };
+		572529872850B05200AC088A /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
 		577B26B5284DF2C2006852EE /* 04 Tokyo Cafe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "04 Tokyo Cafe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		577B26B8284DF2C2006852EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		577B26BA284DF2C2006852EE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -35,6 +49,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5725297C284F77CC00AC088A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5725297A284F752C00AC088A /* CodeGenerator.swift */,
+				572529802850A84F00AC088A /* Product.swift */,
+				572529822850A95000AC088A /* Storage.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		5725297D284F77D800AC088A /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				577B26CD284DF95D006852EE /* LoginViewController.swift */,
+				57252978284F6B3A00AC088A /* OrderViewController.swift */,
+				572529842850AF1600AC088A /* MenuTableViewController.swift */,
+				5725297E284F8FD400AC088A /* CheckViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		572529862850B01D00AC088A /* TableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				572529872850B05200AC088A /* ProductCell.swift */,
+			);
+			name = TableViewCell;
+			sourceTree = "<group>";
+		};
 		577B26AC284DF2C2006852EE = {
 			isa = PBXGroup;
 			children = (
@@ -56,7 +99,9 @@
 			children = (
 				577B26B8284DF2C2006852EE /* AppDelegate.swift */,
 				577B26BA284DF2C2006852EE /* SceneDelegate.swift */,
-				577B26CD284DF95D006852EE /* LoginViewController.swift */,
+				5725297C284F77CC00AC088A /* Models */,
+				572529862850B01D00AC088A /* TableViewCell */,
+				5725297D284F77D800AC088A /* ViewControllers */,
 				577B26C1284DF2C3006852EE /* Assets.xcassets */,
 				577B26C3284DF2C3006852EE /* LaunchScreen.storyboard */,
 				577B26C6284DF2C3006852EE /* Info.plist */,
@@ -155,9 +200,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57252979284F6B3A00AC088A /* OrderViewController.swift in Sources */,
 				577B26CE284DF95D006852EE /* LoginViewController.swift in Sources */,
+				5725297B284F752C00AC088A /* CodeGenerator.swift in Sources */,
+				5725297F284F8FD400AC088A /* CheckViewController.swift in Sources */,
 				577B26B9284DF2C2006852EE /* AppDelegate.swift in Sources */,
+				572529852850AF1600AC088A /* MenuTableViewController.swift in Sources */,
+				572529832850A95000AC088A /* Storage.swift in Sources */,
+				572529882850B05200AC088A /* ProductCell.swift in Sources */,
 				577B26BB284DF2C2006852EE /* SceneDelegate.swift in Sources */,
+				572529812850A84F00AC088A /* Product.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,8 +354,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Tokyo Cafe";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -330,8 +381,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Tokyo Cafe";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
