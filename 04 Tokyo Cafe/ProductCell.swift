@@ -26,7 +26,6 @@ class ProductCell: UITableViewCell {
     
     lazy var productSubtitleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Hiragino Sans", size: 16)
         label.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
         label.numberOfLines = 2
         return label
