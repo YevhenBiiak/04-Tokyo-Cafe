@@ -37,7 +37,7 @@ class OrderViewController: UIViewController {
         conf.image = UIImage(systemName: "plus.circle.fill", withConfiguration: symbolConf)
         conf.imagePadding = 8
         conf.imagePlacement = .leading
-        conf.title = "Add another one"
+        conf.title = "Open menu"
         conf.baseForegroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         let button = UIButton(configuration: conf)
 //      #colorLiteral(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
@@ -80,7 +80,6 @@ class OrderViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        orderTableView.register(ProductCell.self, forCellReuseIdentifier: "ProductCell")
         orderTableView.dataSource = self
         orderTableView.delegate = self
         
@@ -99,7 +98,7 @@ class OrderViewController: UIViewController {
     
     private func showLoginViewController() {
         let loginViewController = LoginViewController()
-        loginViewController.loginComplition = { customer in
+        loginViewController.loginCompletion = { customer in
             self.customer = customer
         }
         loginViewController.modalPresentationStyle = .fullScreen
@@ -108,8 +107,9 @@ class OrderViewController: UIViewController {
     
     @objc private func showMenuViewController() {
         let menuViewController = MenuViewController()
-        menuViewController.addToCartComplition = { (product: Product) in
-            self.orderList.append(product)
+        menuViewController.selectedProducts = orderList
+        menuViewController.closedMenuCompletion = { (products: [Product]) in
+            self.orderList = products
         }
         menuViewController.modalPresentationStyle = .popover
         present(menuViewController, animated: true)
@@ -124,6 +124,9 @@ class OrderViewController: UIViewController {
     private func setupViews() {
         view.backgroundColor = .systemBackground
         navigationItem.backButtonTitle = "back"
+        
+        orderTableView.register(ProductCell.self, forCellReuseIdentifier: "ProductCell")
+        orderTableView.allowsSelection = false
         
         addSubviews()
         addConstraints()
@@ -199,7 +202,6 @@ extension OrderViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let delete = UIContextualAction(style: .destructive, title: "delete") { _, _, _ in
             self.orderList.remove(at: indexPath.row)
-            tableView.reloadData()
         }
         return UISwipeActionsConfiguration(actions: [delete])
     }

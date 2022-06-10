@@ -35,7 +35,8 @@ class MenuViewController: UIViewController {
     
     let cellHeight: CGFloat = 120
     var products: [Product] = []
-    var addToCartComplition: ((Product) -> Void)?
+    var selectedProducts: [Product] = []
+    var closedMenuCompletion: (([Product]) -> Void)?
     
     // MARK: - Life Cycle
     
@@ -48,8 +49,13 @@ class MenuViewController: UIViewController {
         products = MenuItem.testSet
         
         setupViews()
-        menuTableView.register(ProductCell.self, forCellReuseIdentifier: "ProductCell")
         
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        closedMenuCompletion?(selectedProducts)
     }
     
     // MARK: - Actions
@@ -62,7 +68,8 @@ class MenuViewController: UIViewController {
     
     private func setupViews() {
         view.backgroundColor = .systemBackground
-        self.title = "sds"
+        menuTableView.register(ProductCell.self, forCellReuseIdentifier: "ProductCell")
+        
         addSubviews()
         addConstraints()
     }
@@ -84,7 +91,7 @@ class MenuViewController: UIViewController {
         menuTableView.translatesAutoresizingMaskIntoConstraints = false
         menuTableView.topAnchor.constraint(equalTo: closeMenuButton.bottomAnchor, constant: 8).isActive = true
         menuTableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 8).isActive = true
-        menuTableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -8).isActive = true
+        menuTableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         menuTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 8).isActive = true
     }
 }
@@ -103,7 +110,11 @@ extension MenuViewController: UITableViewDataSource {
         guard let cell = cell as? ProductCell else { return cell }
         
         let product = products[indexPath.row]
+
         cell.product = product
+        cell.addToCartCompletion = {
+            self.selectedProducts.append(product)
+        }
         
         return cell
     }
@@ -114,7 +125,5 @@ extension MenuViewController: UITableViewDataSource {
 extension MenuViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let product = products[indexPath.row]
-        addToCartComplition?(product)
     }
 }

@@ -18,9 +18,14 @@ class CheckViewController: UIViewController {
     }
 
     private func setupViews() {
-        view.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
+        view.backgroundColor = .systemBackground
+        
+        tableView.backgroundColor = .white
+        tableView.layer.borderColor = UIColor.darkGray.cgColor
+        tableView.layer.borderWidth = 0.5
+        
         tableView.register(CheckCell.self, forCellReuseIdentifier: "CheckCell")
-                
+        tableView.allowsSelection = false
         tableView.dataSource = self
         
         view.addSubview(tableView)
@@ -29,7 +34,7 @@ class CheckViewController: UIViewController {
         tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 100).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -80).isActive = true
     }
 }
 
@@ -50,13 +55,10 @@ extension CheckViewController: UITableViewDataSource {
             cell.productPriceLabel.text = String(price)
             
         } else {
-            
             let totalPrice = orderList.reduce(Float(0)) { res, item in
                 res + item.price
             }
-            cell.productTitleLable.text = "Total"
-            cell.productPriceLabel.text = String(totalPrice)
-            
+            cell.totalRow(withPrice: totalPrice)
         }
             
         return cell

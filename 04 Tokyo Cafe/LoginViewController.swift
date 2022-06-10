@@ -88,7 +88,7 @@ class LoginViewController: UIViewController {
         return button
     }()
     
-    var loginComplition: ((String) -> Void)?
+    var loginCompletion: ((String) -> Void)?
     
     var codeGenerator: GeneratorProtocol!
     var code: String!
@@ -118,7 +118,7 @@ class LoginViewController: UIViewController {
         if Int(text) != nil {
             guard let phone = phoneLabel.text else {
                 loginButton.isEnabled = false
-                sendMessage(withCode: code, complition: {
+                sendMessage(withCode: code, completion: {
                     self.loginButton.isEnabled = true
                 })
                 phoneLabel.text = "📞  \(text)"
@@ -126,7 +126,7 @@ class LoginViewController: UIViewController {
                 return
             }
             if text == code {
-                loginComplition?(phone)
+                loginCompletion?(phone)
                 dismiss(animated: true)
             } else {
                 textField.placeholder = "Wrong code"
@@ -142,11 +142,11 @@ class LoginViewController: UIViewController {
     
     // MARK: - Help funcs
     
-    private func sendMessage(withCode code: String, complition: @escaping () -> Void) {
+    private func sendMessage(withCode code: String, completion: @escaping () -> Void) {
         Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { _ in
             let alert = UIAlertController(title: "Your code: \(code)", message: nil, preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style: .default) { _ in
-                complition()
+                completion()
             }
             alert.addAction(action)
             action.isEnabled = false

@@ -8,16 +8,25 @@
 import UIKit
 
 class CheckCell: UITableViewCell {
+    private lazy var attrItem = [
+        NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
+        NSAttributedString.Key.foregroundColor: UIColor.darkGray
+    ]
+    
+    private lazy var attrTotal = [
+        NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .heavy),
+        NSAttributedString.Key.foregroundColor: UIColor.darkGray
+    ]
     
     lazy var productTitleLable: UILabel = {
-        let attrDict = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .bold)]
         let label = UILabel()
-        label.attributedText = NSAttributedString(string: "title", attributes: attrDict)
+        label.attributedText = NSAttributedString(string: "title", attributes: attrItem)
         return label
     }()
     
     lazy var productPriceLabel: UILabel = {
         let label = UILabel()
+        label.attributedText = NSAttributedString(string: "price", attributes: attrItem)
         return label
     }()
     
@@ -33,7 +42,22 @@ class CheckCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        productTitleLable.attributedText = NSAttributedString(string: "title", attributes: attrItem)
+        productPriceLabel.attributedText = NSAttributedString(string: "price", attributes: attrItem)
+    }
+    
+    // MARK: - Help methods
+    
+    func totalRow(withPrice total: Float) {
+        productTitleLable.attributedText = NSAttributedString(string: "Total", attributes: attrTotal)
+        productPriceLabel.attributedText = NSAttributedString(string: String(total), attributes: attrTotal)
+    }
+    
     private func setupCell() {
+        backgroundColor = .white
+        
         addSubViews()
         addConstraints()
     }
