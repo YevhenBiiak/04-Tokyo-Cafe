@@ -34,23 +34,23 @@ class MenuViewController: UIViewController {
     }()
     
     let cellHeight: CGFloat = 120
-    var products: [Product] = []
-    var selectedProducts: [Product] = []
-    var closedMenuCompletion: (([Product]) -> Void)?
+    var products: [(prod: Product, qty: Int)] = []
+    var closedMenuCompletion: (([(prod: Product, qty: Int)]) -> Void)?
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        products = MenuItem.testSet
+        if products.isEmpty {
+            products = MenuItem.testSet.map { (prod: $0, qty: 0) }
+        }
         setupViews()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        closedMenuCompletion?(selectedProducts)
+        closedMenuCompletion?(products)
     }
     
     // MARK: - Actions
@@ -63,7 +63,7 @@ class MenuViewController: UIViewController {
     
     private func setupViews() {
         view.backgroundColor = .systemBackground
-        menuTableView.register(ProductCell.self, forCellReuseIdentifier: "ProductCell")
+        menuTableView.register(MenuCell.self, forCellReuseIdentifier: "MenuCell")
         menuTableView.dataSource = self
         menuTableView.delegate = self
         
@@ -99,19 +99,18 @@ extension MenuViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return cellHeight
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return products.count
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for: indexPath)
-        guard let cell = cell as? ProductCell else { return cell }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MenuCell", for: indexPath)
+        guard let cell = cell as? MenuCell else { return cell }
         
-        let product = products[indexPath.row]
-
-        cell.product = product
-        cell.addToCartCompletion = { [unowned self, unowned cell] in
-            self.selectedProducts.append(product)
-            cell.isOrderList = true
+        cell.product = products[indexPath.row]
+        cell.addToCartCompletion = { [unowned self] changedProduct in
+            products[indexPath.row] = changedProduct
         }
         
         return cell

@@ -1,5 +1,5 @@
 //
-//  ProductCell.swift
+//  OrderCell.swift
 //  04 Tokyo Cafe
 //
 //  Created by Евгений Бияк on 08.06.2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProductCell: UITableViewCell {
+class OrderCell: UITableViewCell {
     
     lazy var productImageView: UIImageView = {
         let imageView = UIImageView()
@@ -40,34 +40,31 @@ class ProductCell: UITableViewCell {
         return label
     }()
     
-    lazy var addToCartButton: UIButton = {
-        var conf = UIButton.Configuration.filled()
-        conf.baseBackgroundColor = #colorLiteral(red: 0.4535181522, green: 0.5280769467, blue: 1, alpha: 1)
-        conf.image = UIImage(systemName: "cart.badge.plus")
-        conf.title = "Add"
-        conf.imagePlacement = .trailing
-        conf.imagePadding = 10
-        let button = UIButton(configuration: conf)
-        button.addTarget(nil, action: #selector(addToCart), for: .touchUpInside)
-        button.layer.cornerRadius = 10
-        return button
-    }()
+    var leftConstraint: NSLayoutConstraint?
     
-    var product: Product? {
+    var product: (prod: Product, qty: Int)? {
         didSet {
-            productImageView.image = product?.image
-            productTitleLable.text = product?.name
-            productSubtitleLabel.text = product?.description
-            productPriceLabel.text = String(product?.price ?? 0) + " UAH"
+            productImageView.image = product?.prod.image
+            productTitleLable.text = product?.prod.name
+            productSubtitleLabel.text = product?.prod.description
+            var prefix = ""
+            if let qty = product?.qty, qty > 0 {
+                prefix = "\(qty) x"
+            }
+            productPriceLabel.text = "\(prefix) \(product!.prod.price) UAH"
         }
     }
-    
-    var isOrderList = false {
-        didSet {
-            addToCartButton.isHidden = isOrderList
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        if editing {
+            leftConstraint?.constant = 60.0
+        } else {
+            leftConstraint?.constant = 16
+        }
+        UIView.animate(withDuration: 0.3) {
+            self.layoutIfNeeded()
         }
     }
-    var addToCartCompletion: (() -> Void)?
     
     // MARK: - Initializators
     
@@ -81,16 +78,7 @@ class ProductCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        isOrderList = false
-    }
-    
     // MARK: - Help methods
-    
-    @objc private func addToCart() {
-        addToCartCompletion?()
-    }
     
     private func setupCell() {
         contentView.isUserInteractionEnabled = true
@@ -103,24 +91,19 @@ class ProductCell: UITableViewCell {
         addSubview(productTitleLable)
         addSubview(productSubtitleLabel)
         addSubview(productPriceLabel)
-        addSubview(addToCartButton)
     }
     
     private func addConstraints() {
         productImageView.translatesAutoresizingMaskIntoConstraints = false
         productImageView.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
-        productImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
+        leftConstraint = productImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 16)
+        leftConstraint?.isActive = true
         productImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
         productImageView.widthAnchor.constraint(equalTo: productImageView.heightAnchor).isActive = true
         
         productPriceLabel.translatesAutoresizingMaskIntoConstraints = false
         productPriceLabel.topAnchor.constraint(equalTo: productImageView.topAnchor).isActive = true
         productPriceLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
-        
-        addToCartButton.translatesAutoresizingMaskIntoConstraints = false
-        addToCartButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -16).isActive = true
-        addToCartButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
-        addToCartButton.widthAnchor.constraint(equalToConstant: 95).isActive = true
         
         productTitleLable.translatesAutoresizingMaskIntoConstraints = false
         productTitleLable.topAnchor.constraint(equalTo: productImageView.topAnchor).isActive = true
