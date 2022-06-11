@@ -8,6 +8,23 @@
 import UIKit
 
 class OrderViewController: UIViewController {
+    lazy var preferencesButton: UIBarButtonItem = {
+        let image = UIImage(systemName: "gearshape.fill")
+        let buttItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(showPreferences))
+        buttItem.tintColor = UIColor.darkGray
+        return buttItem
+    }()
+    
+    lazy var deleteAccountButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("delete account", for: .normal)
+        button.layer.cornerRadius = 10
+        button.backgroundColor = UIColor.systemRed
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.addTarget(nil, action: #selector(deleteAccount), for: .touchUpInside)
+        button.isHidden = true
+        return button
+    }()
     
     lazy var reserveLabel: UILabel = {
         let label = UILabel()
@@ -49,8 +66,6 @@ class OrderViewController: UIViewController {
     
     lazy var confirmOrderButton: UIButton = {
         var conf = UIButton.Configuration.filled()
-//        conf.image = UIImage(systemName: "newspaper")
-//        conf.imagePadding = 8
         conf.title = "Confirm order"
         conf.baseBackgroundColor = #colorLiteral(red: 0.4535181522, green: 0.5280769467, blue: 1, alpha: 1)
         let button = UIButton(configuration: conf)
@@ -79,19 +94,24 @@ class OrderViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        orderTableView.dataSource = self
-        orderTableView.delegate = self
-        
         setupViews()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-//      storage.set(nil, forKey: customerKey)
         customer = storage.string(forKey: customerKey)
         if customer == nil {
             showLoginViewController()
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        deleteAccountButton.isHidden = true
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        deleteAccountButton.isHidden = true
     }
     
     // MARK: - Help methods
@@ -108,7 +128,7 @@ class OrderViewController: UIViewController {
     @objc private func showMenuViewController() {
         let menuViewController = MenuViewController()
         menuViewController.selectedProducts = orderList
-        menuViewController.closedMenuCompletion = { (products: [Product]) in
+        menuViewController.closedMenuCompletion = { [unowned self] (products: [Product]) in
             self.orderList = products
         }
         menuViewController.modalPresentationStyle = .popover
@@ -121,11 +141,24 @@ class OrderViewController: UIViewController {
         show(checkViewController, sender: nil)
     }
     
+    @objc private func showPreferences() {
+        deleteAccountButton.isHidden = !deleteAccountButton.isHidden
+    }
+    
+    @objc private func deleteAccount() {
+        storage.set(nil, forKey: customerKey)
+        deleteAccountButton.isHidden = true
+        viewDidAppear(true)
+    }
+    
     private func setupViews() {
         view.backgroundColor = .systemBackground
         navigationItem.backButtonTitle = "back"
+        navigationItem.setRightBarButton(preferencesButton, animated: true)
         
         orderTableView.register(ProductCell.self, forCellReuseIdentifier: "ProductCell")
+        orderTableView.dataSource = self
+        orderTableView.delegate = self
         orderTableView.allowsSelection = false
         
         addSubviews()
@@ -139,9 +172,16 @@ class OrderViewController: UIViewController {
         view.addSubview(orderTableView)
         view.addSubview(menuButton)
         view.addSubview(confirmOrderButton)
+        view.addSubview(deleteAccountButton)
     }
     
     private func addConstraints() {
+        deleteAccountButton.translatesAutoresizingMaskIntoConstraints = false
+        deleteAccountButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 90).isActive = true
+        deleteAccountButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -8).isActive = true
+        deleteAccountButton.widthAnchor.constraint(equalToConstant: 130).isActive = true
+        deleteAccountButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
         reserveLabel.translatesAutoresizingMaskIntoConstraints = false
         reserveLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 120).isActive = true
         reserveLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true

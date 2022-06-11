@@ -43,13 +43,8 @@ class MenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        menuTableView.dataSource = self
-        menuTableView.delegate = self
-        
         products = MenuItem.testSet
-        
         setupViews()
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -69,6 +64,8 @@ class MenuViewController: UIViewController {
     private func setupViews() {
         view.backgroundColor = .systemBackground
         menuTableView.register(ProductCell.self, forCellReuseIdentifier: "ProductCell")
+        menuTableView.dataSource = self
+        menuTableView.delegate = self
         
         addSubviews()
         addConstraints()
@@ -90,7 +87,7 @@ class MenuViewController: UIViewController {
         
         menuTableView.translatesAutoresizingMaskIntoConstraints = false
         menuTableView.topAnchor.constraint(equalTo: closeMenuButton.bottomAnchor, constant: 8).isActive = true
-        menuTableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 8).isActive = true
+        menuTableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         menuTableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         menuTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 8).isActive = true
     }
@@ -112,8 +109,9 @@ extension MenuViewController: UITableViewDataSource {
         let product = products[indexPath.row]
 
         cell.product = product
-        cell.addToCartCompletion = {
+        cell.addToCartCompletion = { [unowned self, unowned cell] in
             self.selectedProducts.append(product)
+            cell.isOrderList = true
         }
         
         return cell
