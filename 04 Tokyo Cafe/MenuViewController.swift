@@ -9,16 +9,16 @@ import UIKit
 
 class MenuViewController: UIViewController {
     
-    let menuTitleLabel: UILabel = {
+    lazy var menuTitleLabel: UILabel = {
         let font = UIFont.systemFont(ofSize: 22, weight: .heavy)
-        let attr = [NSAttributedString.Key.font: font]
+        let attr: [NSAttributedString.Key: Any] = [.font: font]
         let attrString = NSAttributedString(string: "Menu", attributes: attr)
         let label = UILabel()
         label.attributedText = attrString
         return label
     }()
     
-    let closeMenuButton: UIButton = {
+    lazy var closeMenuButton: UIButton = {
         let symbolConf = UIImage.SymbolConfiguration(pointSize: 20)
         var conf = UIButton.Configuration.plain()
         conf.baseForegroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
@@ -28,10 +28,12 @@ class MenuViewController: UIViewController {
         return button
     }()
     
-    let menuTableView: UITableView = {
+    lazy var menuTableView: UITableView = {
         let tableView = UITableView()
         return tableView
     }()
+    
+    // MARK: - Properties
     
     let cellHeight: CGFloat = 120
     var products: [(prod: Product, qty: Int)] = []

@@ -18,7 +18,9 @@ class MenuCell: UITableViewCell {
     }()
     
     lazy var productTitleLable: UILabel = {
-        let attr = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 19, weight: .bold)]
+        let attr: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 19, weight: .bold)
+        ]
         let label = UILabel()
         label.attributedText = NSAttributedString(string: "title", attributes: attr)
         return label
@@ -26,9 +28,9 @@ class MenuCell: UITableViewCell {
     
     lazy var productSubtitleLabel: UILabel = {
         let label = UILabel()
-        let attr = [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14),
-            NSAttributedString.Key.foregroundColor: UIColor.systemGray
+        let attr: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 14),
+            .foregroundColor: UIColor.systemGray
         ]
         label.attributedText = NSAttributedString(string: "subtitle", attributes: attr)
         label.numberOfLines = 2
@@ -53,6 +55,8 @@ class MenuCell: UITableViewCell {
         return button
     }()
     
+    // MARK: - Properties
+    
     var product: (prod: Product, qty: Int)? {
         didSet {
             productImageView.image = product?.prod.image
@@ -70,7 +74,7 @@ class MenuCell: UITableViewCell {
     
     var addToCartCompletion: (((prod: Product, qty: Int)) -> Void)?
     
-    // MARK: - Initializators and overrided func
+    // MARK: - Initializators and override func
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
