@@ -52,7 +52,7 @@ class OrderViewController: UIViewController {
         button.backgroundColor = #colorLiteral(red: 0.5483660102, green: 0.5474765897, blue: 0.5609511733, alpha: 0.3381622517)
         button.layer.cornerRadius = 17
         button.isEnabled = false
-        button.addTarget(nil, action: #selector(changeEditingMode), for: .touchUpInside)
+        button.addTarget(nil, action: #selector(switchEditingMode), for: .touchUpInside)
         return button
     }()
     
@@ -70,7 +70,6 @@ class OrderViewController: UIViewController {
         conf.title = "Open menu"
         conf.baseForegroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         let button = UIButton(configuration: conf)
-//      #colorLiteral(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
         button.backgroundColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 0.8)
         button.layer.cornerRadius = 10
         button.addTarget(nil, action: #selector(showMenuViewController), for: .touchUpInside)
@@ -87,6 +86,8 @@ class OrderViewController: UIViewController {
         return button
     }()
     
+    // MARK: - Properties
+    
     let storage = UserDefaults.standard
     let customerKey = "account"
     
@@ -101,6 +102,10 @@ class OrderViewController: UIViewController {
         didSet {
             orderTableView.reloadData()
             editButton.isEnabled = !orderList.isEmpty
+            if orderList.isEmpty {
+                editButton.backgroundColor = #colorLiteral(red: 0.5483660102, green: 0.5474765897, blue: 0.5609511733, alpha: 0.3381622517)
+                isEditing = false
+            }
         }
     }
     
@@ -112,7 +117,7 @@ class OrderViewController: UIViewController {
     
     let cellHeight: CGFloat = 85
     
-    // MARK: - Life Cycle and overrided methods
+    // MARK: - Life Cycle and override methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -137,20 +142,16 @@ class OrderViewController: UIViewController {
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-        orderTableView.setEditing(editing, animated: true)
+        super.setEditing(editing, animated: true)
+        orderTableView.isEditing = editing
         if editing {
             editButton.backgroundColor = #colorLiteral(red: 0.4535181522, green: 0.5280769467, blue: 1, alpha: 1)
         } else {
             editButton.backgroundColor = #colorLiteral(red: 0.5483660102, green: 0.5474765897, blue: 0.5609511733, alpha: 0.3381622517)
         }
-        guard let cells = orderTableView.visibleCells as? [OrderCell] else { return }
-        for cell in cells {
-            cell.isEditing = editing
-        }
     }
-    
-    // MARK: - Help methods
+   
+    // MARK: - Action methods
     
     private func showLoginViewController() {
         let loginViewController = LoginViewController()
@@ -187,9 +188,11 @@ class OrderViewController: UIViewController {
         viewDidAppear(true)
     }
     
-    @objc private func changeEditingMode() {
-        setEditing(!isEditing, animated: true)
+    @objc private func switchEditingMode() {
+        isEditing = !isEditing
     }
+    
+    // MARK: - Help methods
     
     private func setupViews() {
         view.backgroundColor = .systemBackground
@@ -199,7 +202,7 @@ class OrderViewController: UIViewController {
         orderTableView.register(OrderCell.self, forCellReuseIdentifier: "OrderCell")
         orderTableView.dataSource = self
         orderTableView.delegate = self
-        orderTableView.allowsSelection = false
+        orderTableView.allowsSelectionDuringEditing = true
         
         addSubviews()
         addConstraints()
@@ -271,18 +274,13 @@ extension OrderViewController: UITableViewDataSource {
         
         let product = orderList[indexPath.row]
         cell.product = product
-        cell.setEditing(isEditing, animated: true)
-
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
+        cell.deleteButtonPressedCompletion = { [unowned self] in
             let productName = orderList[indexPath.row].prod.name
             if let index = products.firstIndex(where: { $0.prod.name == productName }) {
                 products[index].qty = 0
             }
         }
+        return cell
     }
 }
 
@@ -292,4 +290,12 @@ extension OrderViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return cellHeight
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switchEditingMode()
+        Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { _ in
+            self.isEditing = false
+        }
+    }
+    
 }

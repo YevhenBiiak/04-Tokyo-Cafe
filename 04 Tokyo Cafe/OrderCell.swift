@@ -18,7 +18,9 @@ class OrderCell: UITableViewCell {
     }()
     
     lazy var productTitleLable: UILabel = {
-        let attr = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 19, weight: .bold)]
+        let attr: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 19, weight: .bold)
+        ]
         let label = UILabel()
         label.attributedText = NSAttributedString(string: "title", attributes: attr)
         return label
@@ -26,9 +28,9 @@ class OrderCell: UITableViewCell {
     
     lazy var productSubtitleLabel: UILabel = {
         let label = UILabel()
-        let attr = [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14),
-            NSAttributedString.Key.foregroundColor: UIColor.systemGray
+        let attr: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 14),
+            .foregroundColor: UIColor.systemGray
         ]
         label.attributedText = NSAttributedString(string: "subtitle", attributes: attr)
         label.numberOfLines = 2
@@ -40,7 +42,19 @@ class OrderCell: UITableViewCell {
         return label
     }()
     
-    var leftConstraint: NSLayoutConstraint?
+    lazy var productDeleteButton: UIButton = {
+        let symbConf = UIImage.SymbolConfiguration(pointSize: 20)
+        var conf = UIButton.Configuration.plain()
+        conf.image = UIImage(systemName: "xmark.circle.fill", withConfiguration: symbConf)
+        conf.baseForegroundColor = .red
+        let button = UIButton(configuration: conf)
+        button.addTarget(nil, action: #selector(deleteButtonPressed), for: .touchUpInside)
+        return button
+    }()
+    
+    // MARK: - Properties
+    
+    private var deleteButtonConstraint: NSLayoutConstraint?
     
     var product: (prod: Product, qty: Int)? {
         didSet {
@@ -54,19 +68,10 @@ class OrderCell: UITableViewCell {
             productPriceLabel.text = "\(prefix) \(product!.prod.price) UAH"
         }
     }
-    override func setEditing(_ editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-        if editing {
-            leftConstraint?.constant = 60.0
-        } else {
-            leftConstraint?.constant = 16
-        }
-        UIView.animate(withDuration: 0.3) {
-            self.layoutIfNeeded()
-        }
-    }
     
-    // MARK: - Initializators
+    var deleteButtonPressedCompletion: (() -> Void)?
+    
+    // MARK: - Initializators and override func
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -78,9 +83,27 @@ class OrderCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        if editing {
+            deleteButtonConstraint?.constant = -15
+        } else {
+            deleteButtonConstraint?.constant = 40
+        }
+        UIView.animate(withDuration: 0.2) {
+            self.layoutIfNeeded()
+        }
+    }
+    
+    // MARK: - Action methods
+    
+    @objc private func deleteButtonPressed() {
+        deleteButtonPressedCompletion?()
+    }
+    
     // MARK: - Help methods
     
     private func setupCell() {
+        selectionStyle = .none
         contentView.isUserInteractionEnabled = true
         addSubViews()
         addConstraints()
@@ -91,13 +114,13 @@ class OrderCell: UITableViewCell {
         addSubview(productTitleLable)
         addSubview(productSubtitleLabel)
         addSubview(productPriceLabel)
+        addSubview(productDeleteButton)
     }
     
     private func addConstraints() {
         productImageView.translatesAutoresizingMaskIntoConstraints = false
         productImageView.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
-        leftConstraint = productImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 16)
-        leftConstraint?.isActive = true
+        productImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
         productImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
         productImageView.widthAnchor.constraint(equalTo: productImageView.heightAnchor).isActive = true
         
@@ -114,6 +137,10 @@ class OrderCell: UITableViewCell {
         productSubtitleLabel.topAnchor.constraint(equalTo: productTitleLable.bottomAnchor, constant: 10).isActive = true
         productSubtitleLabel.leftAnchor.constraint(equalTo: productImageView.rightAnchor, constant: 8).isActive = true
         productSubtitleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -8).isActive = true
+        
+        productDeleteButton.translatesAutoresizingMaskIntoConstraints = false
+        productDeleteButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        deleteButtonConstraint = productDeleteButton.rightAnchor.constraint(equalTo: rightAnchor, constant: 40)
+        deleteButtonConstraint?.isActive = true
     }
-    
 }
