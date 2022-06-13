@@ -26,9 +26,9 @@ class LoginViewController: UIViewController {
         shadow.shadowColor = #colorLiteral(red: 0.7247480154, green: 0.0524269864, blue: 0.583555162, alpha: 1)
 
         let attr: [NSAttributedString.Key: Any] = [
-            NSAttributedString.Key.font: font,
-            NSAttributedString.Key.shadow: shadow,
-            NSAttributedString.Key.foregroundColor: #colorLiteral(red: 1, green: 0.2109183669, blue: 0.9036154747, alpha: 1)
+            .font: font,
+            .shadow: shadow,
+            .foregroundColor: #colorLiteral(red: 1, green: 0.2109183669, blue: 0.9036154747, alpha: 1)
         ]
         let attrString = NSAttributedString(string: "TOKYO", attributes: attr)
         let label = UILabel()
@@ -46,9 +46,9 @@ class LoginViewController: UIViewController {
         shadow.shadowColor = #colorLiteral(red: 0.1411764771, green: 0.3960784376, blue: 0.5647059083, alpha: 1)
         
         let attr: [NSAttributedString.Key: Any] = [
-            NSAttributedString.Key.font: font,
-            NSAttributedString.Key.shadow: shadow,
-            NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+            .font: font,
+            .shadow: shadow,
+            .foregroundColor: #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
         ]
         let attrString = NSAttributedString(string: "cafe", attributes: attr)
         let label = UILabel()
@@ -75,7 +75,7 @@ class LoginViewController: UIViewController {
         textField.layer.cornerRadius = 10
         textField.layer.borderWidth = CGFloat(0.5)
         textField.layer.borderColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
-        textField.placeholder = "Phone number"
+        textField.attributedPlaceholder = NSAttributedString(string: "Phone number", attributes: [.foregroundColor: #colorLiteral(red: 0.3022164106, green: 0.3222107887, blue: 0.4027339816, alpha: 1)])
         return textField
     }()
         
