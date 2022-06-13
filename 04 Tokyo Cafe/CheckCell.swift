@@ -8,27 +8,42 @@
 import UIKit
 
 class CheckCell: UITableViewCell {
-    private lazy var attrItem = [
-        NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
-        NSAttributedString.Key.foregroundColor: UIColor.darkGray
+    private lazy var attrItem: [NSAttributedString.Key: Any] = [
+        .font: UIFont.systemFont(ofSize: 16),
+        .foregroundColor: UIColor.darkGray
     ]
     
-    private lazy var attrTotal = [
-        NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .heavy),
-        NSAttributedString.Key.foregroundColor: UIColor.darkGray
+    private lazy var attrTotal: [NSAttributedString.Key: Any] = [
+        .font: UIFont.systemFont(ofSize: 16, weight: .heavy),
+        .foregroundColor: UIColor.darkGray
     ]
     
-    lazy var productTitleLable: UILabel = {
+    private lazy var productTitleLable: UILabel = {
         let label = UILabel()
         label.attributedText = NSAttributedString(string: "title", attributes: attrItem)
         return label
     }()
     
-    lazy var productPriceLabel: UILabel = {
+    private lazy var productPriceLabel: UILabel = {
         let label = UILabel()
         label.attributedText = NSAttributedString(string: "price", attributes: attrItem)
         return label
     }()
+    
+    var product: (prod: Product, qty: Int)? {
+        didSet {
+            var prefix = ""
+            if let qty = product?.qty, qty > 0 {
+                prefix = "\(qty) x"
+            }
+            
+            let title = product?.prod.name
+            let price = "\(prefix) \(product?.prod.price ?? 0) UAH"
+            
+            productTitleLable.text = title
+            productPriceLabel.text = price
+        }
+    }
     
     // MARK: - Initializators
     
@@ -52,7 +67,7 @@ class CheckCell: UITableViewCell {
     
     func totalRow(withPrice total: Float) {
         productTitleLable.attributedText = NSAttributedString(string: "Total", attributes: attrTotal)
-        productPriceLabel.attributedText = NSAttributedString(string: String(total), attributes: attrTotal)
+        productPriceLabel.attributedText = NSAttributedString(string: "\(total) UAH", attributes: attrTotal)
     }
     
     private func setupCell() {

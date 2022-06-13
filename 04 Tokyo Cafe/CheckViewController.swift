@@ -9,7 +9,8 @@ import UIKit
 
 class CheckViewController: UIViewController {
     
-    let tableView: UITableView = UITableView()
+    lazy var tableView: UITableView = UITableView()
+    
     var orderList: [(prod: Product, qty: Int)] = []
     
     override func viewDidLoad() {
@@ -48,20 +49,7 @@ extension CheckViewController: UITableViewDataSource {
         guard let cell = cell as? CheckCell else { return cell }
         
         if indexPath.row < orderList.count {
-            let product = orderList[indexPath.row].prod
-            let qty = orderList[indexPath.row].qty
-            
-            var prefix = ""
-            if qty > 0 {
-                prefix = "\(qty) x"
-            }
-            
-            let title = product.name
-            let price = "\(prefix) \(product.price) UAH"
-            
-            cell.productTitleLable.text = title
-            cell.productPriceLabel.text = price
-            
+            cell.product = orderList[indexPath.row]
         } else {
             let totalPrice = orderList.reduce(Float(0)) { res, item in
                 res + item.prod.price * Float(item.qty)
