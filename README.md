@@ -14,6 +14,7 @@ Used UI Elements:
 - UITableViewCell
 
 Additionally
+- UserDefault
 - NSLayoutConstraint
 - NSAttributedString
 - NSShadow
